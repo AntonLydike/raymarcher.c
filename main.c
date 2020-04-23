@@ -20,7 +20,7 @@ Color circle_color(Point hit, Point direction, SceneObject *self) {
     Color color = self->color;
 
     if (angle > 90) angle = 180 - angle ; // clamp angle to 0-90
-    color = color_mix(color, color_new(0,0,0), 1 - (angle / (double) 90));
+    color = color_mix(color, color_new(0,0,0), 1 - (angle / (double) 120));
 
     return color;
 }
@@ -32,15 +32,18 @@ SceneObject circle_new(Point loc, double radius) {
     so.args[0] = radius;
     so.distance = circle_dist;
     so.get_color = circle_color;
-    so.color = color_new(255,0,0);
+    so.color = color_new(255,255,255);
     return so;
 }
+
+
+
 
 int main(int argc, char* argv[]) {
     int threads = 1;
     Camera cam;
     cam.fov = 90;
-    camera_set_looking_at(&cam, pt_new(-.6,0,0), pt_new(-.5,1,0));
+    camera_set_looking_at(&cam, pt_new(0,0,0), pt_new(1,1,1));
 
     if (argc > 1) {
         threads = atoi(argv[1]);
@@ -49,11 +52,11 @@ int main(int argc, char* argv[]) {
     printf("threads: %d\n", threads);
 
     // create basic scene with up to 10 objects
-    Scene scene = scene_new(800, 600, 10);
-    scene.max_steps = 64;
+    Scene scene = scene_new(1920, 1080, 10);
+    scene.max_steps = 256;
     scene.threshold = 0.02;
 
-    scene_add_obj(&scene, circle_new(pt_new(0,1,0), .2));
+    scene_add_obj(&scene, circle_new(pt_new(1,1,1), .2));
 
     //scene_add_obj(&scene, circle_new(pt_new(0,2,0), 0.5));
     //scene_add_obj(&scene, circle_new(pt_new(0,-2,0), 0.5));

@@ -11,7 +11,7 @@ inline Point pt_new(double x, double y, double z) {
 }
 
 // scale vector to length
-Point pt_scale(Point pt, double length) {
+inline Point pt_scale(Point pt, double length) {
     double f = length / pt_length(pt);
     return pt_new(
         pt.x * f,
@@ -42,7 +42,7 @@ inline double pt_length(Point pt) {
 }
 
 // add the vector add to the vector pt
-void pt_add(Point* pt, Point add) {
+inline void pt_add(Point* pt, Point add) {
     pt->x = pt->x + add.x;
     pt->y = pt->y + add.y;
     pt->z = pt->z + add.z;
@@ -103,9 +103,9 @@ void pt_orthogonal_plane(Point pt, Point *span_z, Point *span_xy) {
 
 inline Point pt_mod(Point pt, double mod) {
     return pt_new(
-        fmod(pt.x, mod),
-        fmod(pt.y, mod),
-        fmod(pt.z, mod)
+        fabs(fmod(pt.x, mod)),
+        fabs(fmod(pt.y, mod)),
+        fabs(fmod(pt.z, mod))
     );
 }
 

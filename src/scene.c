@@ -28,7 +28,10 @@ void scene_add_obj(Scene* scene, SceneObject object) {
     if (scene->object_count >= scene->allocated_space) return; // limit reached
     // TODO realloc
 
+    
     scene->objects[scene->object_count] = object;
+    // link containing scene
+    scene->objects[scene->object_count].scene = scene;
 
     scene->object_count++;
 }
@@ -102,7 +105,11 @@ Color march_ray(Point origin, Point direction, Scene* scene) {
     // check for a hit
     if (dist <= threshold) {
         // a hit!
-        return closest_obj->get_color(pos, direction, closest_obj);
+        double f = (steps / (double) scene->max_steps);
+        f = f * f * f * f;
+
+        Color c = closest_obj->get_color(pos, direction, closest_obj);
+        return color_mix(c, color_new(0,0,0), f);
 
     } else {
         // a miss :(

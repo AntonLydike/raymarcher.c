@@ -8,6 +8,12 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+struct __myvec;
+struct __mymtrx;
+struct __mycam;
+struct __myobject;
+struct __myscene;
+
 typedef struct __myvec {
     double x;
     double y;
@@ -19,10 +25,10 @@ typedef struct __mymtrx {
 } Matrix;
 
 inline Point pt_new(double x, double y, double z);
-Point pt_scale(Point pt, double length);
+inline Point pt_scale(Point pt, double length);
 inline Point pt_normalize(Point pt);
 inline double pt_length(Point pt);
-void pt_add(Point* pt, Point add);
+inline void pt_add(Point* pt, Point add);
 inline void pt_sub(Point* pt, Point sub);
 inline double pt_dist(Point p1, Point p2);
 inline Point pt_mod(Point pt, double mod);
@@ -53,6 +59,7 @@ typedef struct __myobject {
     double (*distance)(Point, struct __myobject *); 
     Color (*get_color)(Point, Point, struct __myobject *);
     Color color;
+    struct __myscene* scene;
 } SceneObject;
 
 typedef struct __myscene {
