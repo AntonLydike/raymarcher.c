@@ -43,7 +43,9 @@ int main(int argc, char* argv[]) {
     int threads = 1;
     Camera cam;
     cam.fov = 90;
-    camera_set_looking_at(&cam, pt_new(0,0,0), pt_new(1,1,1));
+
+    float cam_position = 0;
+    camera_set_looking_at(&cam, pt_new(cam_position,cam_position,cam_position), pt_new(1,1,1));
 
     if (argc > 1) {
         threads = atoi(argv[1]);
@@ -53,10 +55,10 @@ int main(int argc, char* argv[]) {
 
     // create basic scene with up to 10 objects
     Scene scene = scene_new(1920, 1080, 10);
-    scene.max_steps = 256;
+    scene.max_steps = 300;
     scene.threshold = 0.02;
 
-    scene_add_obj(&scene, circle_new(pt_new(1,1,1), .2));
+    scene_add_obj(&scene, circle_new(pt_new(SCENE_MOD / 2.0, SCENE_MOD/ 2.0, SCENE_MOD / 2.0), .2));
 
     //scene_add_obj(&scene, circle_new(pt_new(0,2,0), 0.5));
     //scene_add_obj(&scene, circle_new(pt_new(0,-2,0), 0.5));

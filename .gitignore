@@ -1,3 +1,6 @@
 *.bmp
 *.png
 *.out
+
+
+!/renders/*.png

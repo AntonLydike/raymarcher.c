@@ -1,5 +1,7 @@
 # Raymarching in C
 
+![infinite spheres](renders/spheres.png)
+
 ## Compiling:
 
 ```fish
