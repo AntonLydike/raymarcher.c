@@ -65,7 +65,10 @@ double mandelbulb_dist(Point pt, SceneObject *self) {
 	float r = 0.0;
 	for (int i = 0; i < iters ; i++) {
 		r = pt_length(z);
-		if (r>2) break;
+
+		if (r>2) {
+            break;
+        }
 		
 		// convert to polar coordinates
 		float theta = acos(z.z/r);
@@ -73,7 +76,7 @@ double mandelbulb_dist(Point pt, SceneObject *self) {
 		dr =  pow(r, power-1.0)*power*dr + 1.0;
 		
 		// scale and rotate the point
-		float zr = pow( r,power);
+		float zr = pow(r, power);
 		theta = theta*power;
 		phi = phi*power;
 		
@@ -85,6 +88,7 @@ double mandelbulb_dist(Point pt, SceneObject *self) {
     return 0.5*log(r)*r/dr;
     
 }
+
 Color mandelbulb_color(Point hit, Point direction, SceneObject *self) {
     return self->color;
 }
@@ -92,12 +96,13 @@ Color mandelbulb_color(Point hit, Point direction, SceneObject *self) {
 SceneObject mandelbulb_new(Point location, int iters, double power) {
     SceneObject so;
     so.location = location;
-    so.args = malloc(sizeof(double) * 2);
+    so.args = malloc(sizeof(double) * 3);
     so.args[0] = iters;         // iterations
-    so.args[1] = power;             // power
+    so.args[1] = power;         // power
+    so.args[2] = -1;            // reserved for color calculations
     so.distance = mandelbulb_dist;
     so.get_color = mandelbulb_color;
-    so.color = color_new(255,255,255);
+    so.color = color_new(0,0,0);
     return so;
 }
 
@@ -117,13 +122,14 @@ int main(int argc, char* argv[]) {
     printf("threads: %d\n", threads);
 
     // create basic scene with up to 10 objects
-    Scene scene = scene_new(512, 512, 10);
+    Scene scene = scene_new(4000, 4000, 10);
     scene.max_steps = 1000;
     scene.threshold = 0.0001;
+    scene.background = color_new(255,255,255);
 
     //scene_add_obj(&scene, circle_new(pt_new(SCENE_MOD / 2.0, SCENE_MOD/ 2.0, SCENE_MOD / 2.0), .2));
 
-    scene_add_obj(&scene, mandelbulb_new(pt_new(1,1,1), 2000, 3));
+    scene_add_obj(&scene, mandelbulb_new(pt_new(1,1,1), 2000, 2.5));
     
     Image *img = render_scene(&scene, &cam, threads);
 

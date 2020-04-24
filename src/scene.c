@@ -108,10 +108,10 @@ Color march_ray(Point origin, Point direction, Scene* scene) {
         #ifndef SCENE_NO_AM_OCC
         
         double f = (steps / (double) scene->max_steps);
-        f = f * f * f * f;
+        f = f * f * f * f; // to the fourth power to make smaller values bigger
 
         Color c = closest_obj->get_color(pos, direction, closest_obj);
-        return color_mix(c, color_new(0,0,0), f);
+        return color_mix(c, scene->background, f);
         
         #else
         

@@ -150,7 +150,7 @@ void camera_iterate_rays_const_dist(Camera camera, int width, int height, int th
         if (y % threads != thread_id) continue;
         
         // display progress in percent
-        if (y % (height / 100) == 0 && y != 0) {
+        if (height > 200 && y % (height / 100) == 0 && y != 0) {
             printf("\r%02i%%", (y * 100) / height);
             fflush(stdout);
         }
