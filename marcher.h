@@ -62,15 +62,22 @@ typedef struct __myobject {
     struct __myscene* scene;
 } SceneObject;
 
+
+typedef struct __perfopts {
+    int speed_cutoff;
+    int max_steps;
+    double threshold;
+} PerformanceOptimizations;
+
+
 typedef struct __myscene {
     unsigned int width;
     unsigned int height;
     SceneObject * objects;
     int object_count;
     int allocated_space;
-    // some other settings
-    int max_steps;
-    double threshold;
+    // performance opts
+    PerformanceOptimizations perf_opts;
     // colors etc
     Color background;
 } Scene;

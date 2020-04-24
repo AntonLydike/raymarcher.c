@@ -122,9 +122,10 @@ int main(int argc, char* argv[]) {
     printf("threads: %d\n", threads);
 
     // create basic scene with up to 10 objects
-    Scene scene = scene_new(4000, 4000, 10);
-    scene.max_steps = 1000;
-    scene.threshold = 0.0001;
+    Scene scene = scene_new(1000, 1000, 10);
+    scene.perf_opts.max_steps = 1000;
+    scene.perf_opts.threshold = 0.0001;
+    scene.perf_opts.speed_cutoff = 10;
     scene.background = color_new(255,255,255);
 
     //scene_add_obj(&scene, circle_new(pt_new(SCENE_MOD / 2.0, SCENE_MOD/ 2.0, SCENE_MOD / 2.0), .2));
@@ -140,4 +141,3 @@ int main(int argc, char* argv[]) {
 
     return 0;  
 }
-

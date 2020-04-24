@@ -15,12 +15,18 @@ Scene scene_new(unsigned int width, unsigned int height, int obj_count) {
     Scene scene;
     scene.height = height;
     scene.width = width;
-    scene.max_steps = 32;
-    scene.threshold = 0.02;
     scene.object_count = 0;
     scene.objects = malloc(obj_count * sizeof(SceneObject));
     scene.allocated_space = obj_count;
     scene.background = color_new(0,0,0);
+
+    PerformanceOptimizations perf_opts;
+    perf_opts.speed_cutoff = 0;
+    perf_opts.max_steps = 32;
+    perf_opts.threshold = 0.02;
+
+    scene.perf_opts = perf_opts;
+
     return scene;
 }
 
@@ -71,8 +77,9 @@ Color march_ray(Point origin, Point direction, Scene* scene) {
     SceneObject* closest_obj = scene->objects;
 
     // get steps, threshold from scene
-    int steps = scene->max_steps;
-    double threshold = scene->threshold;
+    int steps = scene->perf_opts.max_steps;
+    double threshold = scene->perf_opts.threshold;
+    int speed_cutoff = scene->perf_opts.speed_cutoff;
 
     // as long as we did not max out steps, or got very close to an object
     while (steps > 0 && dist > threshold) {
@@ -91,6 +98,10 @@ Color march_ray(Point origin, Point direction, Scene* scene) {
             }
         }
 
+        if (speed_cutoff > 0 && speed_cutoff < dist) {
+            break;
+        }
+
         // write down our closest encounter
         if (dist < closest_encounter) closest_encounter = dist;
 
@@ -107,7 +118,7 @@ Color march_ray(Point origin, Point direction, Scene* scene) {
         // a hit!
         #ifndef SCENE_NO_AM_OCC
         
-        double f = (steps / (double) scene->max_steps);
+        double f = (steps / (double) scene->perf_opts.max_steps);
         f = f * f * f * f; // to the fourth power to make smaller values bigger
 
         Color c = closest_obj->get_color(pos, direction, closest_obj);
