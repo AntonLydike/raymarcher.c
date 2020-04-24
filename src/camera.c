@@ -149,6 +149,12 @@ void camera_iterate_rays_const_dist(Camera camera, int width, int height, int th
         // only render the lines this thread is responsible for
         if (y % threads != thread_id) continue;
         
+        // display progress in percent
+        if (y % (height / 100) == 0 && y != 0) {
+            printf("\r%02i%%", (y * 100) / height);
+            fflush(stdout);
+        }
+
         // actually iterate this line
         curr_pt = starting_point;
         for (int x = 0; x < width; x++) {

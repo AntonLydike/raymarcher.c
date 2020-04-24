@@ -105,11 +105,19 @@ Color march_ray(Point origin, Point direction, Scene* scene) {
     // check for a hit
     if (dist <= threshold) {
         // a hit!
+        #ifndef SCENE_NO_AM_OCC
+        
         double f = (steps / (double) scene->max_steps);
         f = f * f * f * f;
 
         Color c = closest_obj->get_color(pos, direction, closest_obj);
         return color_mix(c, color_new(0,0,0), f);
+        
+        #else
+        
+        return closest_obj->get_color(pos, direction, closest_obj);
+
+        #endif
 
     } else {
         // a miss :(
