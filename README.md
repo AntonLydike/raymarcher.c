@@ -1,6 +1,6 @@
 # Raymarching in C
 
-![infinite spheres](renders/spheres.png)
+![infinite spheres](renders/mandelbulb-pow3.png)
 
 ## Compiling:
 in fish:

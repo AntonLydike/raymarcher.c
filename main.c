@@ -117,13 +117,13 @@ int main(int argc, char* argv[]) {
     printf("threads: %d\n", threads);
 
     // create basic scene with up to 10 objects
-    Scene scene = scene_new(1000, 1000, 10);
+    Scene scene = scene_new(512, 512, 10);
     scene.max_steps = 1000;
     scene.threshold = 0.0001;
 
     //scene_add_obj(&scene, circle_new(pt_new(SCENE_MOD / 2.0, SCENE_MOD/ 2.0, SCENE_MOD / 2.0), .2));
 
-    scene_add_obj(&scene, mandelbulb2_new(pt_new(1,1,1), 2000, 3));
+    scene_add_obj(&scene, mandelbulb_new(pt_new(1,1,1), 2000, 3));
     
     Image *img = render_scene(&scene, &cam, threads);
 
