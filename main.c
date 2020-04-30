@@ -102,39 +102,43 @@ SceneObject mandelbulb_new(Point location, int iters, double power) {
     so.args[2] = -1;            // reserved for color calculations
     so.distance = mandelbulb_dist;
     so.get_color = mandelbulb_color;
-    so.color = color_new(0,0,0);
+    so.color = color_new(255,255,255);
     return so;
 }
 
 int main(int argc, char* argv[]) {
-    int threads = 1;
+    int threads = 12;
+    float pow = 1;
     Camera cam;
     cam.fov = 90;
 
-    float cam_position = 1.2;
+    float cam_position = 1.5;
     camera_set_looking_at(&cam, pt_new(cam_position,cam_position,cam_position), pt_new(0,0,0));
 
     // get thread count from command line
-    if (argc > 1) {
-        threads = atoi(argv[1]);
-    }
+    if (argc < 3) {
+        return 1;
+    } 
+
+    pow = atof(argv[1]);
 
     printf("threads: %d\n", threads);
+    printf("pow: %f\n", pow);
 
     // create basic scene with up to 10 objects
-    Scene scene = scene_new(1000, 1000, 10);
+    Scene scene = scene_new(1080, 1080, 1);
     scene.perf_opts.max_steps = 1000;
     scene.perf_opts.threshold = 0.0001;
-    scene.perf_opts.speed_cutoff = 10;
-    scene.background = color_new(255,255,255);
+    scene.perf_opts.speed_cutoff = 5;
+    scene.background = color_new(0,0,0);
 
     //scene_add_obj(&scene, circle_new(pt_new(SCENE_MOD / 2.0, SCENE_MOD/ 2.0, SCENE_MOD / 2.0), .2));
 
-    scene_add_obj(&scene, mandelbulb_new(pt_new(1,1,1), 2000, 2.5));
+    scene_add_obj(&scene, mandelbulb_new(pt_new(1,1,1), 200, pow));
     
     Image *img = render_scene(&scene, &cam, threads);
 
-    image_save_bmp(*img, "render.bmp");
+    image_save_bmp(*img, argv[2]);
 
     image_destroy_shared(*img);
     scene_destroy(scene);

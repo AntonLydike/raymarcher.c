@@ -1,5 +1,7 @@
 # Raymarching in C
 
+Visit the website at [renders.datenvorr.at](https://renders.datenvorr.at)
+
 ![infinite spheres](renders/mandelbulb-pow3.png)
 
 ## Compiling:
@@ -14,7 +16,6 @@ gcc (pkg-config --cflags --libs gtk+-3.0 | string split " ") -lm -Wall -Wextra -
 ## Running
 
 give it the number of threads you want to use
-
 ```bash
 ./march.out <num threads>
 ```
