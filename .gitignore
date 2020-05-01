@@ -1,6 +1,4 @@
 *.bmp
 *.png
 *.out
-
-
-!/renders/*.png
+out/

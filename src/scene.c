@@ -1,7 +1,7 @@
 #include "../marcher.h"
 #include "../images/images.h"
 
-#include <limits.h>
+#include <float.h>
 
 static Image* current_image;
 static Scene* current_scene;
