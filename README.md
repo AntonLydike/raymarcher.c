@@ -7,8 +7,8 @@ Visit the website at [renders.datenvorr.at](https://renders.datenvorr.at)
 ## Compiling:
 
 ```bash
-# load requirements
-nix-shell --run fish
+# load dev environment (for nixos. this loads just gcc and gdb)
+nix-shell
 # run gcc with flags
 gcc -lm -Wall -Wextra -o march.out main.c
 ```

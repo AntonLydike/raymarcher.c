@@ -1,0 +1,39 @@
+#!/usr/bin/env fish
+
+# settings:
+set step 0.002		# power increase for each frame
+set start 1			# starting power
+set end 3			# end power
+
+# internal vars:
+set counter 1		# internal counter for numbering images
+set pos "$start"	# current power	
+
+# render a frame. power is $argv[1] and counter is $argv[2]
+function render
+	./march.out $argv[1] "out/3/"(num $argv[2])".bmp" > /dev/null
+end
+
+# pad counter with zeroes to the left
+function num
+	printf "%05i" $argv[1]
+end
+
+# iterate over all frames and draw them
+while test "$pos" -lt "$end"
+	render "$pos" "$counter"
+	set pos (math "$pos" + "$step")
+	set counter (math $counter + 1)
+	set percent (math "ceil((($pos - $start) / ($end - $start)) * 100)")
+	echo -ne "\r$percent% ($start -> $pos -> $end)            "
+end
+
+echo to convert the frames to a video, use ffmpeg like this: 
+echo ffmpeg -r 60 -f image2 -s 1080x1080 -i %05d.bmp -vcodec h264 -crf 20 animation.mp4
+echo 
+echo explanation:
+echo "    -r 60         60 fps output video"
+echo "    -s 1080x1080  video resolution"
+echo "    -i %u5d.bmp   file name format"
+echo "    -vcoded h264  video codec"
+echo "    -crf 20       quality. 25 is best, 15 is pretty bad"
